@@ -16,6 +16,10 @@
     "latex",
     "texlab"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fannheyward/coc-texlab"
+  },
   "engines": {
     "coc": "^0.0.70"
   },
