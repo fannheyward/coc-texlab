@@ -1,10 +1,8 @@
 import fs from 'fs';
 import os from 'os';
-import tar from 'tar';
-import unzipper from 'unzipper';
-import request from 'request';
 
 import { ServerOptions, services, ExtensionContext, workspace, LanguageClientOptions, LanguageClient } from 'coc.nvim';
+import { downloadServer } from './downloader';
 
 export async function activate(context: ExtensionContext): Promise<void> {
   const serverPath = getServerPath(context);
@@ -12,8 +10,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
     workspace.showMessage(`TexLab Server is not found, downloading...`);
     try {
       await downloadServer(context);
+      workspace.showMessage(`Download TexLab Server success`);
     } catch (_e) {
-      workspace.showMessage(`Download TexLab failed`);
+      workspace.showMessage(`Download TexLab Server failed`);
       return;
     }
   }
@@ -58,32 +57,3 @@ function getServerOptions(serverPath: string): ServerOptions {
     }
   };
 }
-
-async function downloadServer(context: ExtensionContext): Promise<void> {
-  const urls = {
-    win32: 'https://github.com/latex-lsp/texlab/releases/download/v1.0.0/texlab-x86_64-windows.zip',
-    linux: 'https://github.com/latex-lsp/texlab/releases/download/v1.0.0/texlab-x86_64-linux.tar.gz',
-    darwin: 'https://github.com/latex-lsp/texlab/releases/download/v1.0.0/texlab-x86_64-macos.tar.gz'
-  };
-
-  const url = urls[os.platform()];
-  const path = context.asAbsolutePath('server');
-  const extract = os.platform() === 'win32' ? () => unzipper.Extract({ path }) : () => tar.x({ C: path });
-
-  let statusItem = workspace.createStatusBarItem(0, { progress: true });
-  statusItem.text = 'Downloading TexLab Server';
-  statusItem.show();
-
-  return new Promise((resolve, reject) => {
-    request(url)
-      .pipe(extract())
-      .on('close', () => {
-        resolve();
-        statusItem.dispose();
-      })
-      .on('error', e => {
-        reject(e);
-      });
-  });
-}
-
