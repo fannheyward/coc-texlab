@@ -14,6 +14,10 @@
 
 More info in [TexLab Docs](https://texlab.netlify.com/docs)
 
+## Commands
+
+- `texlab.UpdateLanguageServer`: upgrade TexLab Server to latest version
+
 ## License
 
 MIT

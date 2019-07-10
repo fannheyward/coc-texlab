@@ -1,7 +1,7 @@
 import fs from 'fs';
 import os from 'os';
 
-import { ServerOptions, services, ExtensionContext, workspace, LanguageClientOptions, LanguageClient } from 'coc.nvim';
+import { commands, ServerOptions, services, ExtensionContext, workspace, LanguageClientOptions, LanguageClient } from 'coc.nvim';
 import { downloadServer } from './downloader';
 
 export async function activate(context: ExtensionContext): Promise<void> {
@@ -25,6 +25,18 @@ export async function activate(context: ExtensionContext): Promise<void> {
 
   const client = new LanguageClient('TexLab', serverOptions, clientOptions);
   context.subscriptions.push(services.registLanguageClient(client));
+  context.subscriptions.push(
+    commands.registerCommand('texlab.UpdateLanguageServer', async () => {
+      await downloadServer(context)
+        .then(() => {
+          workspace.showMessage(`Update TexLab Server success`);
+        })
+        .catch(e => {
+          workspace.showMessage(`Update TexLab Server failed, please try again`);
+          console.error(e);
+        });
+    })
+  );
 
   client.onReady().then(() => {
     workspace.showMessage(`TexLab Server Started`);

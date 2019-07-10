@@ -33,19 +33,23 @@ export async function downloadServer(context: ExtensionContext): Promise<void> {
   statusItem.show();
 
   return new Promise((resolve, reject) => {
-    got
-      .stream(url)
-      .on('downloadProgress', progress => {
-        let p = (progress.percent * 100).toFixed(0);
-        statusItem.text = `${p}% Downloading TexLab Server ${ver}`;
-      })
-      .on('end', () => {
-        statusItem.hide();
-        resolve();
-      })
-      .on('error', e => {
-        reject(e);
-      })
-      .pipe(extract());
+    try {
+      got
+        .stream(url)
+        .on('downloadProgress', progress => {
+          let p = (progress.percent * 100).toFixed(0);
+          statusItem.text = `${p}% Downloading TexLab Server ${ver}`;
+        })
+        .on('end', () => {
+          statusItem.hide();
+          resolve();
+        })
+        .on('error', e => {
+          reject(e);
+        })
+        .pipe(extract());
+    } catch (e) {
+      reject(e);
+    }
   });
 }
