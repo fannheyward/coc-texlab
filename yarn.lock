@@ -42,9 +42,9 @@
   integrity sha512-gojym4tX0FWeV2gsW4Xmzo5wxGjXGm550oVUII7f7G5o4BV6c7DBdiG1RRQd+y1bvqRyYtPfMK85UM95vsapqQ==
 
 "@types/tar@^4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@types/tar/-/tar-4.0.2.tgz#c0fc78bb12e736b705412040a12e601c9384a712"
-  integrity sha512-iVAnZlJdez8evBXxan4YEEUCBJ3ML8tyRh30jUzr5QvJLj+BKbOTbHoTbb4F8vKvPJHFCmzgf4KypQKH63lpvg==
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@types/tar/-/tar-4.0.3.tgz#e2cce0b8ff4f285293243f5971bd7199176ac489"
+  integrity sha512-Z7AVMMlkI8NTWF0qGhC4QIX0zkV/+y0J8x7b/RsHrN0310+YNjoJd8UrApCiGBCWtKjxS9QhNqLi2UJNToh5hA==
   dependencies:
     "@types/minipass" "*"
     "@types/node" "*"
