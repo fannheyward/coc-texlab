@@ -1,8 +1,7 @@
+import { commands, ExtensionContext, LanguageClient, LanguageClientOptions, ServerOptions, services, workspace } from 'coc.nvim';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-
-import { commands, ServerOptions, services, ExtensionContext, workspace, LanguageClientOptions, LanguageClient } from 'coc.nvim';
 import { downloadServer } from './downloader';
 
 export async function activate(context: ExtensionContext): Promise<void> {
