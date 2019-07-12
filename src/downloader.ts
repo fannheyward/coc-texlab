@@ -4,7 +4,7 @@ import unzipper from 'unzipper';
 import tunnel from 'tunnel';
 import got from 'got';
 
-import { ExtensionContext, workspace } from 'coc.nvim';
+import { workspace } from 'coc.nvim';
 import { Agent } from 'http';
 
 function getAgent(): Agent | undefined {
@@ -26,20 +26,20 @@ function getAgent(): Agent | undefined {
   }
 }
 
-async function getLatestVersion(): Promise<string> {
-  let ver = '1.0.0';
+async function getLatestVersionTag(): Promise<string> {
+  let tag = 'v1.0.0';
   const apiURL = 'https://api.github.com/repos/latex-lsp/texlab/releases/latest';
   try {
     const agent = getAgent();
     const resp = await got(apiURL, { agent });
-    ver = JSON.parse(resp.body).tag_name;
+    tag = JSON.parse(resp.body).tag_name;
   } catch (_e) {}
 
-  return ver;
+  return tag;
 }
 
-export async function downloadServer(context: ExtensionContext): Promise<void> {
-  const ver = await getLatestVersion();
+export async function downloadServer(root: string): Promise<void> {
+  const ver = await getLatestVersionTag();
   const agent = getAgent();
 
   const urls = {
@@ -48,8 +48,7 @@ export async function downloadServer(context: ExtensionContext): Promise<void> {
     darwin: `https://github.com/latex-lsp/texlab/releases/download/${ver}/texlab-x86_64-macos.tar.gz`
   };
   const url = urls[os.platform()];
-  const path = context.asAbsolutePath('server');
-  const extract = os.platform() === 'win32' ? () => unzipper.Extract({ path }) : () => tar.x({ C: path });
+  const extract = os.platform() === 'win32' ? () => unzipper.Extract({ path: root }) : () => tar.x({ C: root });
 
   let statusItem = workspace.createStatusBarItem(0, { progress: true });
   statusItem.text = 'Downloading TexLab Server';

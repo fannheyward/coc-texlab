@@ -7,5 +7,3 @@ tsconfig.json
 webpack.config.js
 yarn.lock
 yarn-error.log
-server/*
-!server/.gitkeep

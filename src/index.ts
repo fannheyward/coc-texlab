@@ -1,15 +1,20 @@
 import fs from 'fs';
 import os from 'os';
+import path from 'path';
 
 import { commands, ServerOptions, services, ExtensionContext, workspace, LanguageClientOptions, LanguageClient } from 'coc.nvim';
 import { downloadServer } from './downloader';
 
 export async function activate(context: ExtensionContext): Promise<void> {
-  const serverPath = getServerPath(context);
+  const serverRoot = context.storagePath;
+  if (!fs.existsSync(serverRoot)) {
+    fs.mkdirSync(serverRoot);
+  }
+  const serverPath = getServerPath(serverRoot);
   if (!fs.existsSync(serverPath)) {
     workspace.showMessage(`TexLab Server is not found, downloading...`);
     try {
-      await downloadServer(context);
+      await downloadServer(serverRoot);
       workspace.showMessage(`Download TexLab Server success`);
     } catch (_e) {
       workspace.showMessage(`Download TexLab Server failed`);
@@ -27,7 +32,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
   context.subscriptions.push(services.registLanguageClient(client));
   context.subscriptions.push(
     commands.registerCommand('texlab.UpdateLanguageServer', async () => {
-      await downloadServer(context)
+      await downloadServer(serverRoot)
         .then(() => {
           workspace.showMessage(`Update TexLab Server success`);
         })
@@ -43,9 +48,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
   });
 }
 
-function getServerPath(context: ExtensionContext): string {
+function getServerPath(root: string): string {
   const name = os.platform() === 'win32' ? 'texlab.exe' : 'texlab';
-  return context.asAbsolutePath(`./server/${name}`);
+  return path.join(root, name);
 }
 
 function getServerOptions(serverPath: string): ServerOptions {
