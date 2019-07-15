@@ -61,6 +61,25 @@
           "default": "off",
           "description": "Traces the communication between client and language server."
         },
+        "latex.build.executable": {
+          "type": "string",
+          "default": "latexmk",
+          "description": "Path to a LaTeX build tool."
+        },
+        "latex.build.args": {
+          "type": "array",
+          "default": [
+            "-pdf",
+            "-interaction=nonstopmode",
+            "-synctex=1"
+          ],
+          "description": "Additional arguments that are passed to the build tool."
+        },
+        "latex.build.onSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Build after saving a file"
+        },
         "latex.lint.onSave": {
           "type": "boolean",
           "default": true,
