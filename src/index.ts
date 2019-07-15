@@ -24,7 +24,13 @@ export async function activate(context: ExtensionContext): Promise<void> {
   const serverOptions = getServerOptions(serverPath);
   const clientOptions: LanguageClientOptions = {
     documentSelector: ['tex', 'latex', 'bib', 'bibtex'],
-    outputChannelName: 'LaTeX'
+    outputChannelName: 'TexLab',
+    synchronize: {
+      configurationSection: 'latex'
+    },
+    initializationOptions: {
+      settings: { latex: workspace.getConfiguration('latex') }
+    }
   };
 
   const client = new LanguageClient('TexLab', serverOptions, clientOptions);

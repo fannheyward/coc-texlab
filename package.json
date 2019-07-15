@@ -45,5 +45,33 @@
   "prettier": {
     "printWidth": 160,
     "singleQuote": true
+  },
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "TexLab configuration",
+      "properties": {
+        "texlab.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between client and language server."
+        },
+        "latex.lint.onSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Lint after saving a file"
+        },
+        "latex.lint.onChange": {
+          "type": "boolean",
+          "default": false,
+          "description": "Lint after changing a file"
+        }
+      }
+    }
   }
 }
