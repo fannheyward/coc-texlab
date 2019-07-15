@@ -14,6 +14,14 @@
 
 More info in [TexLab Docs](https://texlab.netlify.com/docs)
 
+## Configuration
+
+- `latex.build.executable`: path to a LaTeX build tool, defaults to `latexmk`
+- `latex.build.args`: additional arguments passed to build tool
+- `latex.build.onSave`: build after saving a file, defaults to `false`
+- `latex.lint.onSave`: lint after saving a file, defaults to `true`
+- `latex.lint.onChange`: lint after changing a file, defaults to `false`
+
 ## Commands
 
 - `texlab.UpdateLanguageServer`: upgrade TexLab Server to latest version
