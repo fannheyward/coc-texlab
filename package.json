@@ -38,6 +38,7 @@
     "tunnel": "^0.0.6",
     "typescript": "^3.5.2",
     "unzipper": "^0.10.1",
+    "vscode-languageserver-protocol": "^3.14.1",
     "webpack": "^4.35.0",
     "webpack-cli": "^3.3.5"
   },
@@ -92,5 +93,17 @@
         }
       }
     }
-  }
+  },
+  "commands": [
+    {
+      "command": "latex.Build",
+      "title": "Build current LaTeX file",
+      "category": "LaTeX"
+    },
+    {
+      "command": "latex.UpdateLanguageServer",
+      "title": "Upgrade TexLab Server to latest version",
+      "category": "LaTeX"
+    }
+  ]
 }

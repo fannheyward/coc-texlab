@@ -24,7 +24,8 @@ More info in [TexLab Docs](https://texlab.netlify.com/docs)
 
 ## Commands
 
-- `texlab.UpdateLanguageServer`: upgrade TexLab Server to latest version
+- `latex.Build`: build current file
+- `latex.UpdateLanguageServer`: upgrade TexLab Server to latest version
 
 ## License
 

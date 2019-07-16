@@ -1,7 +1,8 @@
-import { commands, ExtensionContext, LanguageClient, LanguageClientOptions, ServerOptions, services, workspace } from 'coc.nvim';
+import { commands, ExtensionContext, LanguageClientOptions, ServerOptions, services, workspace } from 'coc.nvim';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
+import { BuildStatus, LatexLanuageClient } from './client';
 import { downloadServer } from './downloader';
 
 export async function activate(context: ExtensionContext): Promise<void> {
@@ -33,10 +34,30 @@ export async function activate(context: ExtensionContext): Promise<void> {
     }
   };
 
-  const client = new LanguageClient('TexLab', serverOptions, clientOptions);
+  const client = new LatexLanuageClient('TexLab', serverOptions, clientOptions);
   context.subscriptions.push(services.registLanguageClient(client));
   context.subscriptions.push(
-    commands.registerCommand('texlab.UpdateLanguageServer', async () => {
+    commands.registerCommand('latex.Build', async () => {
+      const doc = await workspace.document;
+      if (workspace.match(['tex', 'latex', 'bib', 'bibtex'], doc.textDocument) <= 0) {
+        return;
+      }
+
+      const result = await client.build(doc);
+
+      switch (result.status) {
+        case BuildStatus.Success:
+          workspace.showMessage(`Build success`);
+          break;
+        case BuildStatus.Error:
+          workspace.showMessage(`Build failed: build process terminated with errors`, 'error');
+          break;
+        case BuildStatus.Failure:
+          workspace.showMessage(`Build failed: build process failed to start or crashed`, 'error');
+          break;
+      }
+    }),
+    commands.registerCommand('latex.UpdateLanguageServer', async () => {
       await downloadServer(serverRoot)
         .then(() => {
           workspace.showMessage(`Update TexLab Server success`);
