@@ -1,5 +1,5 @@
 import { Document, LanguageClient, LanguageClientOptions, ServerOptions } from 'coc.nvim';
-import { RequestType, TextDocumentIdentifier } from 'vscode-languageserver-protocol';
+import { Position, RequestType, TextDocumentIdentifier, TextDocumentPositionParams } from 'vscode-languageserver-protocol';
 
 interface BuildTextDocumentParams {
   /**
@@ -32,8 +32,41 @@ export enum BuildStatus {
   Failure = 2
 }
 
+export enum ForwardSearchStatus {
+  /**
+   * The previewer process executed the command without any errors.
+   */
+  Success = 0,
+
+  /**
+   * The previewer process executed the command with errors.
+   */
+  Error = 1,
+
+  /**
+   * The previewer process failed to start or crashed.
+   */
+  Failure = 2,
+
+  /**
+   * The previewer command is not configured.
+   */
+  Unconfigured = 3
+}
+
+export interface ForwardSearchResult {
+  /**
+   * The status of the previewer process.
+   */
+  status: ForwardSearchStatus;
+}
+
 namespace BuildTextDocumentRequest {
   export const type = new RequestType<BuildTextDocumentParams, BuildResult, void, void>('textDocument/build');
+}
+
+namespace ForwardSearchRequest {
+  export const type = new RequestType<TextDocumentPositionParams, ForwardSearchResult, void, void>('textDocument/forwardSearch');
 }
 
 export class LatexLanuageClient extends LanguageClient {
@@ -48,5 +81,14 @@ export class LatexLanuageClient extends LanguageClient {
     };
 
     return this.sendRequest(BuildTextDocumentRequest.type.method, params);
+  }
+
+  public async forwardSearch(doc: Document, position: Position): Promise<ForwardSearchResult> {
+    const params: TextDocumentPositionParams = {
+      textDocument: <TextDocumentIdentifier>{ uri: doc.uri },
+      position: position
+    };
+
+    return this.sendRequest(ForwardSearchRequest.type.method, params);
   }
 }

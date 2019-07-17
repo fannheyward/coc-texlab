@@ -81,6 +81,19 @@
           "default": false,
           "description": "Build after saving a file"
         },
+        "latex.forwardSearch.executable": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Path to a PDF previewer that supports SyncTeX."
+        },
+        "latex.forwardSearch.args": {
+          "type": "array",
+          "default": [],
+          "description": "Additional arguments that are passed to the previewer."
+        },
         "latex.lint.onSave": {
           "type": "boolean",
           "default": true,
