@@ -5,6 +5,7 @@ import path from 'path';
 import { BuildEngine } from './build';
 import { BuildStatus, ForwardSearchStatus, LatexLanuageClient } from './client';
 import { downloadServer } from './downloader';
+import { Commands, Selectors } from './constants';
 
 export async function activate(context: ExtensionContext): Promise<void> {
   const serverRoot = context.storagePath;
@@ -25,7 +26,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
 
   const serverOptions = getServerOptions(serverPath);
   const clientOptions: LanguageClientOptions = {
-    documentSelector: ['tex', 'latex', 'bib', 'bibtex'],
+    documentSelector: Selectors,
     outputChannelName: 'TexLab',
     synchronize: {
       configurationSection: 'latex'
@@ -40,9 +41,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
 
   context.subscriptions.push(services.registLanguageClient(client));
   context.subscriptions.push(
-    commands.registerCommand('latex.Build', async () => {
+    commands.registerCommand(Commands.BUILD, async () => {
       const doc = await workspace.document;
-      if (workspace.match(['tex', 'latex', 'bib', 'bibtex'], doc.textDocument) <= 0) {
+      if (workspace.match(Selectors, doc.textDocument) <= 0) {
         return;
       }
 
@@ -64,13 +65,13 @@ export async function activate(context: ExtensionContext): Promise<void> {
       }
     }),
 
-    commands.registerCommand('latex.BuildCancel', () => {
+    commands.registerCommand(Commands.BUILD_CANCEL, () => {
       engine.cancel();
     }),
 
-    commands.registerCommand('latex.ForwardSearch', async () => {
+    commands.registerCommand(Commands.FORWARD_SEARCH, async () => {
       const doc = await workspace.document;
-      if (workspace.match(['tex', 'latex', 'bib', 'bibtex'], doc.textDocument) <= 0) {
+      if (workspace.match(Selectors, doc.textDocument) <= 0) {
         return;
       }
 
@@ -92,7 +93,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
       }
     }),
 
-    commands.registerCommand('latex.UpdateLanguageServer', async () => {
+    commands.registerCommand(Commands.UPDATE_LANGUAGE_SERVER, async () => {
       await downloadServer(serverRoot)
         .then(() => {
           workspace.showMessage(`Update TexLab Server success`);
