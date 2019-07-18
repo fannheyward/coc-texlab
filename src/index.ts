@@ -1,8 +1,8 @@
 import { commands, ExtensionContext, LanguageClientOptions, ServerOptions, services, workspace } from 'coc.nvim';
-import { Position } from 'vscode-languageserver-protocol';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
+import { BuildEngine } from './build';
 import { BuildStatus, ForwardSearchStatus, LatexLanuageClient } from './client';
 import { downloadServer } from './downloader';
 
@@ -36,6 +36,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
   };
 
   const client = new LatexLanuageClient('TexLab', serverOptions, clientOptions);
+  const engine = new BuildEngine(client);
+
   context.subscriptions.push(services.registLanguageClient(client));
   context.subscriptions.push(
     commands.registerCommand('latex.Build', async () => {
@@ -44,7 +46,10 @@ export async function activate(context: ExtensionContext): Promise<void> {
         return;
       }
 
-      const result = await client.build(doc);
+      const result = await engine.build(doc);
+      if (!result) {
+        return;
+      }
 
       switch (result.status) {
         case BuildStatus.Success:
@@ -58,6 +63,11 @@ export async function activate(context: ExtensionContext): Promise<void> {
           break;
       }
     }),
+
+    commands.registerCommand('latex.BuildCancel', () => {
+      engine.cancel();
+    }),
+
     commands.registerCommand('latex.ForwardSearch', async () => {
       const doc = await workspace.document;
       if (workspace.match(['tex', 'latex', 'bib', 'bibtex'], doc.textDocument) <= 0) {
@@ -81,6 +91,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
           break;
       }
     }),
+
     commands.registerCommand('latex.UpdateLanguageServer', async () => {
       await downloadServer(serverRoot)
         .then(() => {

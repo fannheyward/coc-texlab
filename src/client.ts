@@ -1,5 +1,5 @@
 import { Document, LanguageClient, LanguageClientOptions, ServerOptions } from 'coc.nvim';
-import { Position, RequestType, TextDocumentIdentifier, TextDocumentPositionParams } from 'vscode-languageserver-protocol';
+import { CancellationToken, Position, RequestType, TextDocumentIdentifier, TextDocumentPositionParams } from 'vscode-languageserver-protocol';
 
 interface BuildTextDocumentParams {
   /**
@@ -75,12 +75,12 @@ export class LatexLanuageClient extends LanguageClient {
     this.registerProposedFeatures();
   }
 
-  public async build(doc: Document): Promise<BuildResult> {
+  public async build(doc: Document, cancellationToken: CancellationToken): Promise<BuildResult> {
     const params: BuildTextDocumentParams = {
       textDocument: <TextDocumentIdentifier>{ uri: doc.uri }
     };
 
-    return this.sendRequest(BuildTextDocumentRequest.type.method, params);
+    return this.sendRequest(BuildTextDocumentRequest.type.method, params, cancellationToken);
   }
 
   public async forwardSearch(doc: Document, position: Position): Promise<ForwardSearchResult> {
