@@ -22,9 +22,9 @@
     defer-to-connect "^1.0.1"
 
 "@types/got@^9.6.0":
-  version "9.6.3"
-  resolved "https://registry.yarnpkg.com/@types/got/-/got-9.6.3.tgz#476cc3d3b9fe8156fedbcc25041e87a556cd96f2"
-  integrity sha512-U6cPjwkJigmTNEsAbbmpsU4+Rb59wTkZ7+7xchi2e6uzimQKD5H0iXJTnqxIEtcF9UNV2fzfGJzbdhvpg0QzAg==
+  version "9.6.4"
+  resolved "https://registry.yarnpkg.com/@types/got/-/got-9.6.4.tgz#4b03d6bb0beeed46a689c075814924eb3cef6084"
+  integrity sha512-zFVFoD9YRICaQFe9l8cYvuOWUT65cWRAt7ngNh+lCbTE12EmAvFp1/9WMS75m/jUoSKYjeKl5S2ztC3sHftGVA==
   dependencies:
     "@types/node" "*"
     "@types/tough-cookie" "*"
