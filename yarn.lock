@@ -62,10 +62,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/unzipper@^0.9.2":
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/@types/unzipper/-/unzipper-0.9.2.tgz#852f7db5b1656c3c7e93549d8fc31d490111352e"
-  integrity sha512-9K8sLpn1dxIzbXMDgUerkyO1z0deg5RqN/F6df8waAM94aPnS7x7V0l12kkUYoUlM8r4xWgvlcXLdWQvt6KdUA==
+"@types/unzipper@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@types/unzipper/-/unzipper-0.10.0.tgz#ae051eed1ec6735ff5adfac235d9bb17471b2901"
+  integrity sha512-GZL5vt0o9ZAST+7ge1Sirzc14EEJFbq6kib24nS0UglY6BHX8ERhA8cBq4XsYWcGK212FtMBZyJz6AwPvrhGLQ==
   dependencies:
     "@types/node" "*"
 
