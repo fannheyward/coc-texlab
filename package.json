@@ -105,18 +105,28 @@
           "description": "Lint after changing a file"
         }
       }
-    }
-  },
-  "commands": [
-    {
-      "command": "latex.Build",
-      "title": "Build current LaTeX file",
-      "category": "LaTeX"
     },
-    {
-      "command": "latex.UpdateLanguageServer",
-      "title": "Upgrade TexLab Server to latest version",
-      "category": "LaTeX"
-    }
-  ]
+    "commands": [
+      {
+        "command": "latex.Build",
+        "title": "Build current LaTeX file",
+        "category": "TexLab"
+      },
+      {
+        "command": "latex.BuildCancel",
+        "title": "Cancels the current build",
+        "category": "TexLab"
+      },
+      {
+        "command": "latex.ForwardSearch",
+        "title": "Performs a forward search from the current file, used to preview PDF",
+        "category": "TexLab"
+      },
+      {
+        "command": "latex.UpdateLanguageServer",
+        "title": "Upgrade TexLab Server to latest version",
+        "category": "TexLab"
+      }
+    ]
+  }
 }
