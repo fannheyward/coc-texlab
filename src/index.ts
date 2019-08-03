@@ -2,10 +2,10 @@ import { commands, ExtensionContext, LanguageClientOptions, ServerOptions, servi
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { BuildEngine } from './build';
+import { Proposed } from 'vscode-languageserver-protocol';
 import { BuildStatus, ForwardSearchStatus, LatexLanuageClient } from './client';
-import { downloadServer } from './downloader';
 import { Commands, Selectors } from './constants';
+import { downloadServer } from './downloader';
 
 export async function activate(context: ExtensionContext): Promise<void> {
   const serverRoot = context.storagePath;
@@ -37,7 +37,6 @@ export async function activate(context: ExtensionContext): Promise<void> {
   };
 
   const client = new LatexLanuageClient('TexLab', serverOptions, clientOptions);
-  const engine = new BuildEngine(client);
 
   context.subscriptions.push(services.registLanguageClient(client));
   context.subscriptions.push(
@@ -47,7 +46,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
         return;
       }
 
-      const result = await engine.build(doc);
+      const result = await client.build(doc);
       if (!result) {
         return;
       }
@@ -55,6 +54,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
       switch (result.status) {
         case BuildStatus.Success:
           workspace.showMessage(`Build success`);
+          break;
+        case BuildStatus.Cancelled:
+          workspace.showMessage(`Build cancelled`);
           break;
         case BuildStatus.Error:
           workspace.showMessage(`Build failed: build process terminated with errors`, 'error');
@@ -66,7 +68,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
     }),
 
     commands.registerCommand(Commands.BUILD_CANCEL, () => {
-      engine.cancel();
+      client.sendNotification(Proposed.ProgressCancelNotification.type, {
+        id: 'texlab-build-*'
+      });
     }),
 
     commands.registerCommand(Commands.FORWARD_SEARCH, async () => {

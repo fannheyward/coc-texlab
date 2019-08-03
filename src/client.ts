@@ -1,5 +1,5 @@
 import { Document, LanguageClient, LanguageClientOptions, ServerOptions } from 'coc.nvim';
-import { CancellationToken, Position, RequestType, TextDocumentIdentifier, TextDocumentPositionParams } from 'vscode-languageserver-protocol';
+import { Position, RequestType, TextDocumentIdentifier, TextDocumentPositionParams } from 'vscode-languageserver-protocol';
 
 interface BuildTextDocumentParams {
   /**
@@ -29,7 +29,12 @@ export enum BuildStatus {
   /**
    * The build process failed to start or crashed.
    */
-  Failure = 2
+  Failure = 2,
+
+  /**
+   * The build process was cancelled.
+   */
+  Cancelled = 3
 }
 
 export enum ForwardSearchStatus {
@@ -75,12 +80,12 @@ export class LatexLanuageClient extends LanguageClient {
     this.registerProposedFeatures();
   }
 
-  public async build(doc: Document, cancellationToken: CancellationToken): Promise<BuildResult> {
+  public async build(doc: Document): Promise<BuildResult> {
     const params: BuildTextDocumentParams = {
       textDocument: <TextDocumentIdentifier>{ uri: doc.uri }
     };
 
-    return this.sendRequest(BuildTextDocumentRequest.type.method, params, cancellationToken);
+    return this.sendRequest(BuildTextDocumentRequest.type.method, params);
   }
 
   public async forwardSearch(doc: Document, position: Position): Promise<ForwardSearchResult> {

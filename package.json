@@ -114,7 +114,7 @@
       },
       {
         "command": "latex.BuildCancel",
-        "title": "Cancels the current build",
+        "title": "Cancel all running builds",
         "category": "TexLab"
       },
       {
