@@ -39,6 +39,10 @@ async function getLatestVersionTag(): Promise<string> {
 }
 
 export async function downloadServer(root: string): Promise<void> {
+  let statusItem = workspace.createStatusBarItem(0, { progress: true });
+  statusItem.text = 'Getting the latest version...';
+  statusItem.show();
+
   const ver = await getLatestVersionTag();
   const agent = getAgent();
 
@@ -50,9 +54,7 @@ export async function downloadServer(root: string): Promise<void> {
   const url = urls[os.platform()];
   const extract = os.platform() === 'win32' ? () => unzipper.Extract({ path: root }) : () => tar.x({ C: root });
 
-  let statusItem = workspace.createStatusBarItem(0, { progress: true });
-  statusItem.text = 'Downloading TexLab Server';
-  statusItem.show();
+  statusItem.text = `Downloading TexLab Server ${ver}`;
 
   return new Promise((resolve, reject) => {
     try {
