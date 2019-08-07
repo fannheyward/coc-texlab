@@ -27,6 +27,7 @@ More info in [TexLab Docs](https://texlab.netlify.com/docs)
 ## Commands
 
 - `latex.Build`: build current file
+- `latex.BuildCancel`: cancel all running builds
 - `latex.ForwardSearch`: performs a forward search from the current file
 - `latex.UpdateLanguageServer`: upgrade TexLab Server to latest version
 
