@@ -118,11 +118,6 @@
         "category": "TexLab"
       },
       {
-        "command": "latex.BuildToggle",
-        "title": "Toggle build & cancel actions",
-        "category": "TexLab"
-      },
-      {
         "command": "latex.ForwardSearch",
         "title": "Performs a forward search from the current file, used to preview PDF",
         "category": "TexLab"
