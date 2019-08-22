@@ -3303,9 +3303,9 @@ unset-value@^1.0.0:
     isobject "^3.0.0"
 
 unzipper@^0.10.1:
-  version "0.10.3"
-  resolved "https://registry.yarnpkg.com/unzipper/-/unzipper-0.10.3.tgz#455ee5f709b5aae716f1d91e625f919417819677"
-  integrity sha512-vH3+KAfi01r2wioCve0djy0NRpQUfjVFoLWdsup8u6xdCId2vn8TEDReRfYGjdGuVQ/2aEDaWgeRJCcPOsRHqw==
+  version "0.10.4"
+  resolved "https://registry.yarnpkg.com/unzipper/-/unzipper-0.10.4.tgz#3963156436178bd8fe027c1ceec3f250acccc44f"
+  integrity sha512-7fmeZe+1J5D5fRMl4Zl4Chn+y+Os0bFgBrzc0Iuv3Xj+xFY0mrRUxzbrj8ZUO/lkyErJxtZJ5a13pLXc+KxvRg==
   dependencies:
     big-integer "^1.6.17"
     binary "~0.3.0"
