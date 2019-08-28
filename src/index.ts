@@ -68,8 +68,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
     }),
 
     commands.registerCommand(Commands.BUILD_CANCEL, () => {
-      client.sendNotification(Proposed.WorkDoneProgressCancelNotification.type.method, {
-        id: 'texlab-build-*'
+      client.sendNotification(Proposed.WorkDoneProgressCancelNotification.type, {
+        token: 'texlab-build-*'
       });
     }),
 
