@@ -30,7 +30,7 @@
     "@types/tunnel": "^0.0.1",
     "@types/unzipper": "^0.10.0",
     "axios": "^0.19.0",
-    "coc.nvim": "^0.0.73",
+    "coc.nvim": "^0.0.74",
     "got": "^9.6.0",
     "rimraf": "^3.0.0",
     "tar": "^5.0.2",
