@@ -15,6 +15,11 @@ export const Selectors = [
   },
 
   {
+    language: 'plaintex',
+    scheme: 'file'
+  },
+
+  {
     language: 'tex',
     scheme: 'untitled'
   },
@@ -26,6 +31,11 @@ export const Selectors = [
 
   {
     language: 'bibtex',
+    scheme: 'untitled'
+  },
+
+  {
+    language: 'plaintex',
     scheme: 'untitled'
   }
 ];

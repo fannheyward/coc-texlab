@@ -44,6 +44,11 @@
     "printWidth": 160,
     "singleQuote": true
   },
+  "activationEvents": [
+    "onLanguage:latex",
+    "onLanguage:bibtex",
+    "onLanguage:plaintex"
+  ],
   "contributes": {
     "configuration": {
       "type": "object",
