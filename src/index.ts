@@ -3,6 +3,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { Proposed } from 'vscode-languageserver-protocol';
+import which from 'which';
 import { BuildStatus, ForwardSearchStatus, LatexLanuageClient } from './client';
 import { Commands, Selectors } from './constants';
 import { downloadServer } from './downloader';
@@ -12,15 +13,20 @@ export async function activate(context: ExtensionContext): Promise<void> {
   if (!fs.existsSync(serverRoot)) {
     fs.mkdirSync(serverRoot);
   }
-  const serverPath = getServerPath(serverRoot);
-  if (!fs.existsSync(serverPath)) {
-    workspace.showMessage(`TexLab Server is not found, downloading...`);
-    try {
-      await downloadServer(serverRoot);
-      workspace.showMessage(`Download TexLab Server success`);
-    } catch (_e) {
-      workspace.showMessage(`Download TexLab Server failed`);
-      return;
+
+  const bin = os.platform() === 'win32' ? 'texlab.exe' : 'texlab';
+  let serverPath = bin;
+  if (!which.sync(bin, { nothrow: true })) {
+    serverPath = path.join(serverRoot, bin);
+    if (!fs.existsSync(serverPath)) {
+      workspace.showMessage(`TexLab Server is not found, downloading...`);
+      try {
+        await downloadServer(serverRoot);
+        workspace.showMessage(`Download TexLab Server success`);
+      } catch (_e) {
+        workspace.showMessage(`Download TexLab Server failed`);
+        return;
+      }
     }
   }
 
@@ -112,11 +118,6 @@ export async function activate(context: ExtensionContext): Promise<void> {
   client.onReady().then(() => {
     workspace.showMessage(`TexLab Server Started`);
   });
-}
-
-function getServerPath(root: string): string {
-  const name = os.platform() === 'win32' ? 'texlab.exe' : 'texlab';
-  return path.join(root, name);
 }
 
 function getServerOptions(serverPath: string): ServerOptions {
