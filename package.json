@@ -90,6 +90,11 @@
           "default": false,
           "description": "Build after saving a file"
         },
+        "latex.build.outputDirectory": {
+          "type": "string",
+          "default": ".",
+          "description": "Directory containing the build artifacts."
+        },
         "latex.forwardSearch.executable": {
           "type": [
             "string",
