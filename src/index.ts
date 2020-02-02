@@ -2,7 +2,7 @@ import { commands, ExtensionContext, LanguageClientOptions, ServerOptions, servi
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { Proposed } from 'vscode-languageserver-protocol';
+import { WorkDoneProgressCancelNotification } from 'vscode-languageserver-protocol';
 import which from 'which';
 import { BuildStatus, ForwardSearchStatus, LatexLanuageClient } from './client';
 import { Commands, Selectors } from './constants';
@@ -74,7 +74,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
     }),
 
     commands.registerCommand(Commands.BUILD_CANCEL, () => {
-      client.sendNotification(Proposed.WorkDoneProgressCancelNotification.type.method, {
+      client.sendNotification(WorkDoneProgressCancelNotification.type.method, {
         token: 'texlab-build-*'
       });
     }),
