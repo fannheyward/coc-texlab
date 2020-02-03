@@ -1,11 +1,10 @@
-import os from 'os';
-import tar from 'tar';
-import unzipper from 'unzipper';
-import tunnel from 'tunnel';
-import got from 'got';
-
 import { workspace } from 'coc.nvim';
 import { Agent } from 'http';
+import fetch from 'node-fetch';
+import os from 'os';
+import tar from 'tar';
+import tunnel from 'tunnel';
+import unzipper from 'unzipper';
 
 function getAgent(): Agent | undefined {
   let proxy = workspace.getConfiguration('http').get<string>('proxy', '');
@@ -27,15 +26,17 @@ function getAgent(): Agent | undefined {
 }
 
 async function getLatestVersionTag(): Promise<string> {
-  let tag = 'v1.0.0';
   const apiURL = 'https://api.github.com/repos/latex-lsp/texlab/releases/latest';
-  try {
-    const agent = getAgent();
-    const resp = await got(apiURL, { agent });
-    tag = JSON.parse(resp.body).tag_name;
-  } catch (_e) {}
+  const agent = getAgent();
 
-  return tag;
+  return fetch(apiURL, { agent })
+    .then(resp => resp.json())
+    .then(resp => {
+      return resp.tag_name;
+    })
+    .catch(() => {
+      return 'v1.0.0';
+    });
 }
 
 export async function downloadServer(root: string): Promise<void> {
@@ -57,23 +58,26 @@ export async function downloadServer(root: string): Promise<void> {
   statusItem.text = `Downloading TexLab Server ${ver}`;
 
   return new Promise((resolve, reject) => {
-    try {
-      got
-        .stream(url, { agent })
-        .on('downloadProgress', progress => {
-          let p = (progress.percent * 100).toFixed(0);
-          statusItem.text = `${p}% Downloading TexLab Server ${ver}`;
-        })
-        .on('end', () => {
-          statusItem.hide();
-          resolve();
-        })
-        .on('error', e => {
-          reject(e);
-        })
-        .pipe(extract());
-    } catch (e) {
-      reject(e);
-    }
+    fetch(url, { agent })
+      .then(resp => {
+        let cur = 0;
+        const len = parseInt(resp.headers.get('content-length') || '', 10);
+        resp.body
+          .on('data', chunk => {
+            if (!isNaN(len)) {
+              cur += chunk.length;
+              const p = ((cur / len) * 100).toFixed(2);
+              statusItem.text = `${p}% Downloading TexLab Server ${ver}`;
+            }
+          })
+          .on('end', () => {
+            statusItem.hide();
+            resolve();
+          })
+          .pipe(extract());
+      })
+      .catch(e => {
+        reject(e);
+      });
   });
 }
