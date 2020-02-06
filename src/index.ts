@@ -22,9 +22,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
       workspace.showMessage(`TexLab Server is not found, downloading...`);
       try {
         await downloadServer(serverRoot);
-        workspace.showMessage(`Download TexLab Server success`);
-      } catch (_e) {
-        workspace.showMessage(`Download TexLab Server failed`);
+      } catch (e) {
+        workspace.showMessage(`Download TexLab Server failed`, 'error');
+        console.error(e);
         return;
       }
     }
@@ -104,14 +104,15 @@ export async function activate(context: ExtensionContext): Promise<void> {
     }),
 
     commands.registerCommand(Commands.UPDATE_LANGUAGE_SERVER, async () => {
-      await downloadServer(serverRoot)
-        .then(() => {
-          workspace.showMessage(`Update TexLab Server success`);
-        })
-        .catch(e => {
-          workspace.showMessage(`Update TexLab Server failed, please try again`);
-          console.error(e);
-        });
+      await client.stop();
+      try {
+        await downloadServer(serverRoot);
+      } catch (e) {
+        workspace.showMessage(`Update TexLab Server failed, please try again`);
+        console.error(e);
+        return;
+      }
+      client.start();
     })
   );
 

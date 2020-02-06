@@ -77,6 +77,7 @@ export async function downloadServer(root: string): Promise<void> {
           .pipe(extract());
       })
       .catch(e => {
+        statusItem.hide();
         reject(e);
       });
   });
