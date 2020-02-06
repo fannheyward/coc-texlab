@@ -4,7 +4,7 @@ import os from 'os';
 import path from 'path';
 import { WorkDoneProgressCancelNotification } from 'vscode-languageserver-protocol';
 import which from 'which';
-import { BuildStatus, ForwardSearchStatus, LatexLanuageClient } from './client';
+import { BuildStatus, ForwardSearchStatus, LatexLanguageClient } from './client';
 import { Commands, Selectors } from './constants';
 import { downloadServer } from './downloader';
 
@@ -42,7 +42,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
     }
   };
 
-  const client = new LatexLanuageClient('TexLab', serverOptions, clientOptions);
+  const client = new LatexLanguageClient('TexLab', serverOptions, clientOptions);
 
   context.subscriptions.push(services.registLanguageClient(client));
   context.subscriptions.push(

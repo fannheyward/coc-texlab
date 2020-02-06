@@ -74,7 +74,7 @@ namespace ForwardSearchRequest {
   export const type = new RequestType<TextDocumentPositionParams, ForwardSearchResult, void, void>('textDocument/forwardSearch');
 }
 
-export class LatexLanuageClient extends LanguageClient {
+export class LatexLanguageClient extends LanguageClient {
   constructor(name: string, serverOptions: ServerOptions, clientOptions: LanguageClientOptions) {
     super(name, serverOptions, clientOptions);
     this.registerProposedFeatures();
