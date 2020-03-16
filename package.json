@@ -71,6 +71,14 @@
           "default": "off",
           "description": "Traces the communication between client and language server."
         },
+        "latex.rootDirectory": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": ".",
+          "description": "Path to the root directory."
+        },
         "latex.build.executable": {
           "type": "string",
           "default": "latexmk",
