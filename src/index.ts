@@ -52,6 +52,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
         return;
       }
 
+      workspace.showMessage(`Build started`);
+
       const result = await client.build(doc);
       if (!result) {
         return;
