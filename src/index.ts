@@ -30,10 +30,11 @@ export async function activate(context: ExtensionContext): Promise<void> {
     }
   }
 
+  const outputChannel = workspace.createOutputChannel('TexLab');
   const serverOptions = getServerOptions(serverPath);
   const clientOptions: LanguageClientOptions = {
     documentSelector: Selectors,
-    outputChannelName: 'TexLab',
+    outputChannel,
     synchronize: {
       configurationSection: 'latex'
     },
@@ -52,6 +53,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
         return;
       }
 
+      outputChannel.clear();
       workspace.showMessage(`Build started`);
 
       const result = await client.build(doc);
@@ -87,6 +89,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
         return;
       }
 
+      outputChannel.clear();
       const position = await workspace.getCursorPosition();
       const result = await client.forwardSearch(doc, position);
       switch (result.status) {
