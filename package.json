@@ -90,7 +90,8 @@
           "default": [
             "-pdf",
             "-interaction=nonstopmode",
-            "-synctex=1"
+            "-synctex=1",
+            "%f"
           ],
           "description": "Additional arguments that are passed to the build tool."
         },
