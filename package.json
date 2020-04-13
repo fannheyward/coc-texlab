@@ -24,8 +24,8 @@
     "coc": "^0.0.70"
   },
   "devDependencies": {
-    "@types/node": "^13.9.1",
-    "@types/node-fetch": "^2.5.5",
+    "@types/node": "^13.11.1",
+    "@types/node-fetch": "^2.5.6",
     "@types/tar": "^4.0.2",
     "@types/tunnel": "^0.0.1",
     "@types/unzipper": "^0.10.3",
