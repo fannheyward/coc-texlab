@@ -2,7 +2,7 @@ import { commands, ExtensionContext, LanguageClientOptions, ServerOptions, servi
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { WorkDoneProgressCancelNotification } from 'vscode-languageserver-protocol';
+import { FoldingRange, WorkDoneProgressCancelNotification } from 'vscode-languageserver-protocol';
 import which from 'which';
 import { BuildStatus, ForwardSearchStatus, LatexLanguageClient } from './client';
 import { Commands, Selectors } from './constants';
@@ -40,6 +40,12 @@ export async function activate(context: ExtensionContext): Promise<void> {
     },
     initializationOptions: {
       settings: { latex: workspace.getConfiguration('latex') }
+    },
+    middleware: {
+      provideFoldingRanges: async (document, context, token, next) => {
+        const ranges = (await next(document, context, token)) as FoldingRange[];
+        return ranges.reverse();
+      }
     }
   };
 
