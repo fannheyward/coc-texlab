@@ -15,14 +15,23 @@ export async function activate(context: ExtensionContext): Promise<void> {
   }
 
   const bin = os.platform() === 'win32' ? 'texlab.exe' : 'texlab';
-  let serverPath = bin;
-  if (!which.sync(bin, { nothrow: true })) {
-    serverPath = path.join(serverRoot, bin);
-    if (!fs.existsSync(serverPath)) {
+  let serverPath = path.join(serverRoot, bin);
+
+  const custom = workspace.getConfiguration('texlab').get('path') as string;
+  if (custom && fs.existsSync(custom)) {
+    serverPath = custom;
+  }
+
+  if (!fs.existsSync(serverPath)) {
+    const first = which.sync(bin, { nothrow: true });
+    if (first) {
+      serverPath = first;
+    } else {
       workspace.showMessage(`TexLab Server is not found, downloading...`);
       try {
         await downloadServer(serverRoot);
       } catch (e) {
+        if (fs.existsSync(serverPath)) fs.unlinkSync(serverPath);
         workspace.showMessage(`Download TexLab Server failed`, 'error');
         console.error(e);
         return;
@@ -119,6 +128,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
       try {
         await downloadServer(serverRoot);
       } catch (e) {
+        if (fs.existsSync(serverPath)) fs.unlinkSync(serverPath);
         workspace.showMessage(`Update TexLab Server failed, please try again`);
         console.error(e);
         return;

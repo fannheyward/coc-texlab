@@ -15,6 +15,7 @@ More info in [TexLab Docs](https://texlab.netlify.com/docs)
 
 ## Configuration
 
+- `texlab.path`: custom path to `texlab` binary, defaults to `""`
 - `latex.build.executable`: path to a LaTeX build tool, defaults to `latexmk`
 - `latex.build.args`: additional arguments passed to build tool
 - `latex.build.onSave`: build after saving a file, defaults to `false`
