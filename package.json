@@ -30,7 +30,7 @@
     "@types/tunnel": "^0.0.1",
     "@types/unzipper": "^0.10.3",
     "@types/which": "^1.3.2",
-    "axios": "^0.20.0",
+    "axios": "^0.21.0",
     "coc.nvim": "^0.0.79",
     "minimist": "^1.2.5",
     "node-fetch": "^2.6.0",
