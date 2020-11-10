@@ -53,6 +53,10 @@ export async function downloadServer(root: string): Promise<void> {
     darwin: `https://github.com/latex-lsp/texlab/releases/download/${ver}/texlab-x86_64-macos.tar.gz`
   };
   const url = urls[os.platform()];
+  if (!url) {
+    statusItem.hide();
+    throw new Error(`Texlab doesn't support ${os.platform()} for now.`);
+  }
   const extract = os.platform() === 'win32' ? () => unzipper.Extract({ path: root }) : () => tar.x({ C: root });
 
   statusItem.text = `Downloading TexLab Server ${ver}`;
