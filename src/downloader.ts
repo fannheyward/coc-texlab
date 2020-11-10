@@ -58,6 +58,7 @@ export async function downloadServer(root: string): Promise<void> {
   statusItem.text = `Downloading TexLab Server ${ver}`;
 
   return new Promise((resolve, reject) => {
+    if ( os.platform() in urls) {
     fetch(url, { agent })
       .then(resp => {
         let cur = 0;
@@ -80,5 +81,8 @@ export async function downloadServer(root: string): Promise<void> {
         statusItem.hide();
         reject(e);
       });
+  } else {
+    throw new Error('Unsupported platform: '+os.platform);
+  }
   });
 }
