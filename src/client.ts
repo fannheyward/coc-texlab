@@ -1,5 +1,5 @@
-import { Document, LanguageClient, LanguageClientOptions, ServerOptions } from 'coc.nvim';
-import { Position, RequestType, TextDocumentIdentifier, TextDocumentPositionParams } from 'vscode-languageserver-protocol';
+import { Document, LanguageClient, LanguageClientOptions, Position, RequestType, ServerOptions, TextDocumentIdentifier } from 'coc.nvim';
+import { TextDocumentPositionParams } from 'vscode-languageserver-protocol';
 
 interface BuildTextDocumentParams {
   /**
@@ -77,7 +77,6 @@ namespace ForwardSearchRequest {
 export class LatexLanguageClient extends LanguageClient {
   constructor(name: string, serverOptions: ServerOptions, clientOptions: LanguageClientOptions) {
     super(name, serverOptions, clientOptions);
-    this.registerProposedFeatures();
   }
 
   public async build(doc: Document): Promise<BuildResult> {

@@ -1,4 +1,4 @@
-import { workspace } from 'coc.nvim';
+import { window, workspace } from 'coc.nvim';
 import { Agent } from 'http';
 import fetch from 'node-fetch';
 import os from 'os';
@@ -40,7 +40,7 @@ async function getLatestVersionTag(): Promise<string> {
 }
 
 export async function downloadServer(root: string): Promise<void> {
-  let statusItem = workspace.createStatusBarItem(0, { progress: true });
+  let statusItem = window.createStatusBarItem(0, { progress: true });
   statusItem.text = 'Getting the latest version...';
   statusItem.show();
 
