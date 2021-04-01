@@ -30,10 +30,10 @@
     "@types/minipass" "*"
     "@types/node" "*"
 
-"@types/tunnel@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@types/tunnel/-/tunnel-0.0.1.tgz#0d72774768b73df26f25df9184273a42da72b19c"
-  integrity sha512-AOqu6bQu5MSWwYvehMXLukFHnupHrpZ8nvgae5Ggie9UwzDR1CCwoXgSSWNZJuyOlCdfdsWMA5F2LlmvyoTv8A==
+"@types/tunnel@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@types/tunnel/-/tunnel-0.0.2.tgz#cec1d20f826dcead25f339338ff190ea8bc7af4e"
+  integrity sha512-2gYBYYPhn3/aozRdfS+DSxFnf3YZ9IM9q6Wjee1xVj/vtRm1MwT9EN9yFSiQW05eAVRLkWJj3qpMAhIA6EY9mw==
   dependencies:
     "@types/node" "*"
 
