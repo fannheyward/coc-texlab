@@ -31,7 +31,7 @@
     "@types/which": "^2.0.0",
     "axios": "^0.21.0",
     "coc.nvim": "^0.0.80",
-    "esbuild": "^0.8.42",
+    "esbuild": "^0.11.2",
     "minimist": "^1.2.5",
     "node-fetch": "^2.6.0",
     "rimraf": "^3.0.0",
