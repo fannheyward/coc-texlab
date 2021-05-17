@@ -1,5 +1,4 @@
-import { Document, LanguageClient, LanguageClientOptions, Position, RequestType, ServerOptions, TextDocumentIdentifier } from 'coc.nvim';
-import { TextDocumentPositionParams } from 'vscode-languageserver-protocol';
+import { Document, LanguageClient, LanguageClientOptions, Position, RequestType, ServerOptions, TextDocumentIdentifier, TextDocumentPositionParams } from 'coc.nvim';
 
 interface BuildTextDocumentParams {
   /**

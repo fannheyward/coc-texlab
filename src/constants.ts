@@ -43,8 +43,6 @@ export const Selectors = [
 export namespace Commands {
   export const BUILD = 'latex.Build';
 
-  export const BUILD_CANCEL = 'latex.BuildCancel';
-
   export const FORWARD_SEARCH = 'latex.ForwardSearch';
 
   export const UPDATE_LANGUAGE_SERVER = 'latex.UpdateLanguageServer';

@@ -2,7 +2,6 @@ import { commands, ExtensionContext, FoldingRange, LanguageClientOptions, Server
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { WorkDoneProgressCancelNotification } from 'vscode-languageserver-protocol';
 import which from 'which';
 import { BuildStatus, ForwardSearchStatus, LatexLanguageClient } from './client';
 import { Commands, Selectors } from './constants';
@@ -27,7 +26,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
     if (first) {
       serverPath = first;
     } else {
-      window.showMessage(`TexLab Server is not found, downloading...`);
+      const msg = `TexLab Server is not found, download from GitHub?`;
+      const ret = await window.showQuickpick(['Yes', 'Cancel'], msg);
+      if (ret > 0) return;
       try {
         await downloadServer(serverRoot);
       } catch (e) {
@@ -39,17 +40,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
     }
   }
 
-  const outputChannel = window.createOutputChannel('TexLab');
   const serverOptions = getServerOptions(serverPath);
   const clientOptions: LanguageClientOptions = {
     documentSelector: Selectors,
-    outputChannel,
-    synchronize: {
-      configurationSection: 'latex'
-    },
-    initializationOptions: {
-      settings: { latex: workspace.getConfiguration('latex') }
-    },
     middleware: {
       provideFoldingRanges: async (document, context, token, next) => {
         const ranges = (await next(document, context, token)) as FoldingRange[];
@@ -63,63 +56,17 @@ export async function activate(context: ExtensionContext): Promise<void> {
   context.subscriptions.push(services.registLanguageClient(client));
   context.subscriptions.push(
     commands.registerCommand(Commands.BUILD, async () => {
-      const doc = await workspace.document;
-      if (workspace.match(Selectors, doc.textDocument) <= 0) {
-        return;
-      }
-
-      outputChannel.clear();
-      window.showMessage(`Build started`);
-
-      const result = await client.build(doc);
-      if (!result) {
-        return;
-      }
-
-      switch (result.status) {
-        case BuildStatus.Success:
-          window.showMessage(`Build success`);
-          break;
-        case BuildStatus.Cancelled:
-          window.showMessage(`Build cancelled`);
-          break;
-        case BuildStatus.Error:
-          window.showMessage(`Build failed: build process terminated with errors`, 'error');
-          break;
-        case BuildStatus.Failure:
-          window.showMessage(`Build failed: build process failed to start or crashed`, 'error');
-          break;
-      }
-    }),
-
-    commands.registerCommand(Commands.BUILD_CANCEL, () => {
-      client.sendNotification(WorkDoneProgressCancelNotification.type.method, {
-        token: 'texlab-build-*'
-      });
+      await build(client);
     }),
 
     commands.registerCommand(Commands.FORWARD_SEARCH, async () => {
-      const doc = await workspace.document;
-      if (workspace.match(Selectors, doc.textDocument) <= 0) {
-        return;
-      }
+      await forwardSearch(client);
+    }),
 
-      outputChannel.clear();
-      const position = await window.getCursorPosition();
-      const result = await client.forwardSearch(doc, position);
-      switch (result.status) {
-        case ForwardSearchStatus.Success:
-          window.showMessage(`Preview success`);
-          break;
-        case ForwardSearchStatus.Error:
-          window.showMessage(`Preview failed: previewer process executed the command with errors`, 'error');
-          break;
-        case ForwardSearchStatus.Failure:
-          window.showMessage(`Preview failed: previewer process failed to start or crashed`, 'error');
-          break;
-        case ForwardSearchStatus.Unconfigured:
-          window.showMessage(`Preview failed: previewer command is not configured`, 'warning');
-          break;
+    workspace.onDidSaveTextDocument(async () => {
+      const onSave = workspace.getConfiguration('texlab.build').get<boolean>('onSave');
+      if (onSave) {
+        await build(client);
       }
     }),
 
@@ -140,6 +87,63 @@ export async function activate(context: ExtensionContext): Promise<void> {
   client.onReady().then(() => {
     window.showMessage(`TexLab Server Started`);
   });
+}
+
+async function build(client: LatexLanguageClient): Promise<void> {
+  const doc = await workspace.document;
+  if (workspace.match(Selectors, doc.textDocument) <= 0) {
+    return;
+  }
+
+  window.showMessage(`Build started`);
+
+  const result = await client.build(doc);
+  if (!result) {
+    return;
+  }
+
+  switch (result.status) {
+    case BuildStatus.Success:
+      window.showMessage(`Build success`);
+      const forwardSearchAfter = workspace.getConfiguration('texlab.build').get<boolean>('forwardSearchAfter');
+      if (forwardSearchAfter) {
+        await forwardSearch(client);
+      }
+      break;
+    case BuildStatus.Cancelled:
+      window.showMessage(`Build cancelled`);
+      break;
+    case BuildStatus.Error:
+      window.showMessage(`Build failed: build process terminated with errors`, 'error');
+      break;
+    case BuildStatus.Failure:
+      window.showMessage(`Build failed: build process failed to start or crashed`, 'error');
+      break;
+  }
+}
+
+async function forwardSearch(client: LatexLanguageClient): Promise<void> {
+  const doc = await workspace.document;
+  if (workspace.match(Selectors, doc.textDocument) <= 0) {
+    return;
+  }
+
+  const position = await window.getCursorPosition();
+  const result = await client.forwardSearch(doc, position);
+  switch (result.status) {
+    case ForwardSearchStatus.Success:
+      window.showMessage(`Preview success`);
+      break;
+    case ForwardSearchStatus.Error:
+      window.showMessage(`Preview failed: previewer process executed the command with errors`, 'error');
+      break;
+    case ForwardSearchStatus.Failure:
+      window.showMessage(`Preview failed: previewer process failed to start or crashed`, 'error');
+      break;
+    case ForwardSearchStatus.Unconfigured:
+      window.showMessage(`Preview failed: previewer command is not configured`, 'warning');
+      break;
+  }
 }
 
 function getServerOptions(serverPath: string): ServerOptions {
