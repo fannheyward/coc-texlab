@@ -143,7 +143,7 @@
         },
         "texlab.formatterLineLength": {
           "type": "integer",
-          "default": 120,
+          "default": 80,
           "description": "Maximum amount of characters per line (0 = disable)."
         }
       }
