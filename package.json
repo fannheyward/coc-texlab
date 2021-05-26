@@ -128,7 +128,7 @@
         },
         "texlab.chktex.onOpenAndSave": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Lint using chktex after opening and saving a file."
         },
         "texlab.chktex.onEdit": {
