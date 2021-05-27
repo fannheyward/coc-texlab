@@ -1,6 +1,6 @@
 {
   "name": "coc-texlab",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "TexLab extension for coc.nvim",
   "main": "lib/index.js",
   "author": "Heyward Fann <fannheyward@gmail.com>",
