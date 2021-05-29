@@ -22,7 +22,7 @@ More info in [TexLab Docs](https://texlab.netlify.com/docs)
 - `texlab.auxDirectory`: directory containing the build artifacts, defaults to `"."`
 - `texlab.forwardSearch.executable`: path to a PDF previewer that supports SyncTeX, defaults `null`
 - `texlab.forwardSearch.args`: additional arguments passed to the previewer, defaults `[]`
-- `texlab.chktex.onOpenAndSave`: lint using chktex after opening and saving a file, defaults to `true`
+- `texlab.chktex.onOpenAndSave`: lint using chktex after opening and saving a file, defaults to `false`
 - `texlab.chktex.onEdit`: lint using chktex after changing a file, defaults to `false`
 - `texlab.bibtexFormatter`: BibTeX formatter to use
 - `texlab.formatterLineLength`: maximum amount of characters per line
