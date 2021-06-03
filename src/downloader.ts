@@ -35,7 +35,7 @@ async function getLatestRelease(): Promise<{ ver: string; url: string; } | null>
   const resp = await fetch(apiURL, { agent: getAgent() });
   if (!resp.ok) return null;
 
-  const ver = (await resp.json()).tag_name || 'v3.0.0';
+  const ver = (await resp.json()).tag_name || 'v3.1.0';
   const urls = {
     win32: `https://github.com/latex-lsp/texlab/releases/download/${ver}/texlab-x86_64-windows.zip`,
     linux: `https://github.com/latex-lsp/texlab/releases/download/${ver}/texlab-x86_64-linux.tar.gz`,

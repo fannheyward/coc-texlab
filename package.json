@@ -145,6 +145,24 @@
           "type": "integer",
           "default": 80,
           "description": "Maximum amount of characters per line (0 = disable)."
+        },
+        "texlab.latexFormatter": {
+          "type": "string",
+          "default": "latexindent",
+          "description": "LaTeX formatter to use."
+        },
+        "texlab.latexindent.local": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Configures the --local flag of latexindent."
+        },
+        "texlab.latexindent.modifyLineBreaks": {
+          "type": "boolean",
+          "default": false,
+          "description": "Configures the --modifylinebreaks flag of latexindent."
         }
       }
     },
