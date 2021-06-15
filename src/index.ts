@@ -63,13 +63,6 @@ export async function activate(context: ExtensionContext): Promise<void> {
       await forwardSearch(client);
     }),
 
-    workspace.onDidSaveTextDocument(async () => {
-      const onSave = workspace.getConfiguration('texlab.build').get<boolean>('onSave');
-      if (onSave) {
-        await build(client);
-      }
-    }),
-
     commands.registerCommand(Commands.UPDATE_LANGUAGE_SERVER, async () => {
       await client.stop();
       try {
@@ -105,10 +98,6 @@ async function build(client: LatexLanguageClient): Promise<void> {
   switch (result.status) {
     case BuildStatus.Success:
       window.showMessage(`Build success`);
-      const forwardSearchAfter = workspace.getConfiguration('texlab.build').get<boolean>('forwardSearchAfter');
-      if (forwardSearchAfter) {
-        await forwardSearch(client);
-      }
       break;
     case BuildStatus.Cancelled:
       window.showMessage(`Build cancelled`);
