@@ -33,7 +33,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
         await downloadServer(serverRoot);
       } catch (e) {
         if (fs.existsSync(serverPath)) fs.unlinkSync(serverPath);
-        window.showMessage(`Download TexLab Server failed`, 'error');
+        window.showErrorMessage(`Download TexLab Server failed`);
         console.error(e);
         return;
       }
@@ -69,7 +69,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
         await downloadServer(serverRoot);
       } catch (e) {
         if (fs.existsSync(serverPath)) fs.unlinkSync(serverPath);
-        window.showMessage(`Update TexLab Server failed, please try again`);
+        window.showInformationMessage(`Update TexLab Server failed, please try again`);
         console.error(e);
         return;
       }
@@ -78,7 +78,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
   );
 
   client.onReady().then(() => {
-    window.showMessage(`TexLab Server Started`);
+    window.showInformationMessage(`TexLab Server Started`);
   });
 }
 
@@ -88,7 +88,7 @@ async function build(client: LatexLanguageClient): Promise<void> {
     return;
   }
 
-  window.showMessage(`Build started`);
+  window.showInformationMessage(`Build started`);
 
   const result = await client.build(doc);
   if (!result) {
@@ -97,16 +97,16 @@ async function build(client: LatexLanguageClient): Promise<void> {
 
   switch (result.status) {
     case BuildStatus.Success:
-      window.showMessage(`Build success`);
+      window.showInformationMessage(`Build success`);
       break;
     case BuildStatus.Cancelled:
-      window.showMessage(`Build cancelled`);
+      window.showInformationMessage(`Build cancelled`);
       break;
     case BuildStatus.Error:
-      window.showMessage(`Build failed: build process terminated with errors`, 'error');
+      window.showErrorMessage(`Build failed: build process terminated with errors`);
       break;
     case BuildStatus.Failure:
-      window.showMessage(`Build failed: build process failed to start or crashed`, 'error');
+      window.showErrorMessage(`Build failed: build process failed to start or crashed`);
       break;
   }
 }
@@ -121,16 +121,16 @@ async function forwardSearch(client: LatexLanguageClient): Promise<void> {
   const result = await client.forwardSearch(doc, position);
   switch (result.status) {
     case ForwardSearchStatus.Success:
-      window.showMessage(`Preview success`);
+      window.showInformationMessage(`Preview success`);
       break;
     case ForwardSearchStatus.Error:
-      window.showMessage(`Preview failed: previewer process executed the command with errors`, 'error');
+      window.showErrorMessage(`Preview failed: previewer process executed the command with errors`);
       break;
     case ForwardSearchStatus.Failure:
-      window.showMessage(`Preview failed: previewer process failed to start or crashed`, 'error');
+      window.showErrorMessage(`Preview failed: previewer process failed to start or crashed`);
       break;
     case ForwardSearchStatus.Unconfigured:
-      window.showMessage(`Preview failed: previewer command is not configured`, 'warning');
+      window.showWarningMessage(`Preview failed: previewer command is not configured`);
       break;
   }
 }
