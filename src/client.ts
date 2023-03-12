@@ -66,11 +66,11 @@ export interface ForwardSearchResult {
 }
 
 namespace BuildTextDocumentRequest {
-  export const type = new RequestType<BuildTextDocumentParams, BuildResult, void, void>('textDocument/build');
+  export const type = new RequestType<BuildTextDocumentParams, BuildResult, void>('textDocument/build');
 }
 
 namespace ForwardSearchRequest {
-  export const type = new RequestType<TextDocumentPositionParams, ForwardSearchResult, void, void>('textDocument/forwardSearch');
+  export const type = new RequestType<TextDocumentPositionParams, ForwardSearchResult, void>('textDocument/forwardSearch');
 }
 
 export class LatexLanguageClient extends LanguageClient {
