@@ -35,11 +35,12 @@ async function getLatestRelease(): Promise<{ ver: string; url: string; } | null>
   const resp = await fetch(apiURL, { agent: getAgent() });
   if (!resp.ok) return null;
 
-  const ver = (await resp.json()).tag_name || 'v3.1.0';
+  const ver = (await resp.json()).tag_name || 'v5.9.2';
+  const arch = process.arch === 'arm64' ? 'aarch64' : 'x86_64';
   const urls = {
-    win32: `https://github.com/latex-lsp/texlab/releases/download/${ver}/texlab-x86_64-windows.zip`,
-    linux: `https://github.com/latex-lsp/texlab/releases/download/${ver}/texlab-x86_64-linux.tar.gz`,
-    darwin: `https://github.com/latex-lsp/texlab/releases/download/${ver}/texlab-x86_64-macos.tar.gz`
+    win32: `https://github.com/latex-lsp/texlab/releases/download/${ver}/texlab-${arch}-windows.zip`,
+    linux: `https://github.com/latex-lsp/texlab/releases/download/${ver}/texlab-${arch}-linux.tar.gz`,
+    darwin: `https://github.com/latex-lsp/texlab/releases/download/${ver}/texlab-${arch}-macos.tar.gz`
   };
   const url = urls[process.platform];
   return url ? { url, ver } : null;
