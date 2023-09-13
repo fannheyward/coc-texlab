@@ -1,0 +1,14 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "21:00"
+  open-pull-requests-limit: 10
+  reviewers:
+  - fannheyward
+  ignore:
+  - dependency-name: got
+    versions:
+    - ">= 10.a, < 11"
