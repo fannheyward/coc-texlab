@@ -30,7 +30,7 @@
     "@types/unzipper": "^0.10.5",
     "@types/which": "^2.0.0",
     "coc.nvim": "^0.0.83-next.9",
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.28.1",
     "node-fetch": "^2.6.0",
     "rimraf": "^4.4.1",
     "tar": "^7.5.7",
