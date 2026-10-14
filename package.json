@@ -161,6 +161,52 @@
         }
       }
     },
+    "rootPatterns": [
+      {
+        "filetype": "tex",
+        "patterns": [
+          "latexmkrc",
+          ".latexmkrc",
+          "llmk.toml",
+          "main.tex",
+          ".git",
+          ".hg"
+        ]
+      },
+      {
+        "filetype": "latex",
+        "patterns": [
+          "latexmkrc",
+          ".latexmkrc",
+          "llmk.toml",
+          "main.tex",
+          ".git",
+          ".hg"
+        ]
+      },
+      {
+        "filetype": "plaintex",
+        "patterns": [
+          "latexmkrc",
+          ".latexmkrc",
+          "llmk.toml",
+          "main.tex",
+          ".git",
+          ".hg"
+        ]
+      },
+      {
+        "filetype": "bibtex",
+        "patterns": [
+          "latexmkrc",
+          ".latexmkrc",
+          "llmk.toml",
+          "main.tex",
+          ".git",
+          ".hg"
+        ]
+      }
+    ],
     "commands": [
       {
         "command": "latex.Build",
