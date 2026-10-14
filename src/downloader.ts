@@ -4,7 +4,7 @@ import { Agent } from 'http';
 import fetch from 'node-fetch';
 import path from 'path';
 import { pipeline } from 'stream';
-import tar from 'tar';
+import * as tar from 'tar';
 import tunnel from 'tunnel';
 import unzipper from 'unzipper';
 import { promisify } from 'util';
