@@ -103,10 +103,38 @@
           "default": false,
           "description": "Execute forward search after building"
         },
+        "texlab.build.useFileList": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use the .fls files produced by the TeX engine as an additional input for project detection. May impact performance."
+        },
+        "texlab.build.auxDirectory": {
+          "type": "string",
+          "default": ".",
+          "description": "Directory containing the .aux files, when not using latexmk."
+        },
+        "texlab.build.logDirectory": {
+          "type": "string",
+          "default": ".",
+          "description": "Directory containing the build log files, when not using latexmk."
+        },
+        "texlab.build.pdfDirectory": {
+          "type": "string",
+          "default": ".",
+          "description": "Directory containing the output files, when not using latexmk."
+        },
+        "texlab.build.filename": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Overrides the default file name of the build artifact, used to find the PDF file for forward search."
+        },
         "texlab.auxDirectory": {
           "type": "string",
           "default": ".",
-          "description": "Directory containing the build artifacts."
+          "description": "DEPRECATED: Directory containing the build artifacts. Use texlab.build.auxDirectory instead."
         },
         "texlab.forwardSearch.executable": {
           "type": [
@@ -130,6 +158,73 @@
           "type": "boolean",
           "default": false,
           "description": "Lint using chktex after changing a file"
+        },
+        "texlab.chktex.additionalArgs": {
+          "type": "array",
+          "default": [],
+          "description": "Additional command line arguments that are passed to chktex. Don't redefine the -I and -f flags."
+        },
+        "texlab.diagnosticsDelay": {
+          "type": "integer",
+          "default": 300,
+          "description": "Delay in milliseconds before reporting diagnostics."
+        },
+        "texlab.diagnostics.allowedPatterns": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Only diagnostics matching at least one of these regular expressions are reported."
+        },
+        "texlab.diagnostics.ignoredPatterns": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Diagnostics matching any of these regular expressions are not reported."
+        },
+        "texlab.symbols.allowedPatterns": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Only document symbols matching at least one of these regular expressions are sent to the client."
+        },
+        "texlab.symbols.ignoredPatterns": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Document symbols matching any of these regular expressions are not sent to the client."
+        },
+        "texlab.symbols.customEnvironments": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name of the environment."
+              },
+              "displayName": {
+                "type": "string",
+                "description": "The name shown in the document symbols. By default, title case is used."
+              },
+              "label": {
+                "type": "boolean",
+                "description": "If set, the server will try to match a label to the environment and append its number."
+              }
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "description": "Extends the list of environments that are part of the document symbols."
         },
         "texlab.bibtexFormatter": {
           "type": "string",
@@ -158,6 +253,154 @@
           "type": "boolean",
           "default": false,
           "description": "Configures the --modifylinebreaks flag of latexindent."
+        },
+        "texlab.latexindent.replacement": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "-r",
+            "-rv",
+            "-rr",
+            null
+          ],
+          "default": null,
+          "description": "Additional replacement flag that is added when calling latexindent."
+        },
+        "texlab.completion.matcher": {
+          "type": "string",
+          "enum": [
+            "fuzzy",
+            "fuzzy-ignore-case",
+            "prefix",
+            "prefix-ignore-case"
+          ],
+          "default": "fuzzy-ignore-case",
+          "description": "The algorithm used to filter the completion items returned to the client."
+        },
+        "texlab.hover.symbols": {
+          "type": "string",
+          "enum": [
+            "none",
+            "glyph",
+            "image"
+          ],
+          "default": "image",
+          "description": "The way symbol-like commands (e. g. \\epsilon) are displayed during a hover request."
+        },
+        "texlab.inlayHints.labelDefinitions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Return inlay hints for \\label-like commands."
+        },
+        "texlab.inlayHints.labelReferences": {
+          "type": "boolean",
+          "default": true,
+          "description": "Return inlay hints for \\ref-like commands."
+        },
+        "texlab.inlayHints.maxLength": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "description": "When set, truncate the text of the inlay hints to the specified length."
+        },
+        "texlab.experimental.followPackageLinks": {
+          "type": "boolean",
+          "default": false,
+          "description": "Resolve dependencies of custom packages and include them in the dependency graph."
+        },
+        "texlab.experimental.mathEnvironments": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Extends the list of environments considered as math environments (e. g. \"align*\")."
+        },
+        "texlab.experimental.enumEnvironments": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Extends the list of environments considered as enumeration environments (e. g. \"enumerate\")."
+        },
+        "texlab.experimental.verbatimEnvironments": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Extends the list of environments considered as verbatim environments (e. g. \"minted\")."
+        },
+        "texlab.experimental.citationCommands": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Extends the list of citation commands. Commands must be written without a leading backslash."
+        },
+        "texlab.experimental.labelDefinitionCommands": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Extends the list of \\label-like commands. Commands must be written without a leading backslash."
+        },
+        "texlab.experimental.labelReferenceCommands": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Extends the list of \\ref-like commands. Commands must be written without a leading backslash."
+        },
+        "texlab.experimental.labelReferenceRangeCommands": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Extends the list of \\crefrange-like commands. Commands must be written without a leading backslash."
+        },
+        "texlab.experimental.glossaryReferenceCommands": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Extends the list of \\gls-like commands. Commands must be written without a leading backslash."
+        },
+        "texlab.experimental.labelDefinitionPrefixes": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "description": "Associates a label definition command with a custom prefix, e. g. [[\"thm\", \"thm:\"]]."
+        },
+        "texlab.experimental.labelReferencePrefixes": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "description": "Associates a label reference command with a custom prefix, e. g. [[\"thmref\", \"thm:\"]]."
         }
       }
     },
